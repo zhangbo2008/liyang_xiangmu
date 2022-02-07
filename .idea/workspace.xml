@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1eea079-f04c-4bd4-b576-4ee3ce8201c9" name="Default Changelist" comment="" />
+    <list default="true" id="b1eea079-f04c-4bd4-b576-4ee3ce8201c9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1_old.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1_old日志" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1日志" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1重做.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1重做2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1重做日志" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MDF-SA-DDI-main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/李杨的项目.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1.py" beforeDir="false" afterPath="$PROJECT_DIR$/task1.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="21RFYHE7ak9SHyQ9HvsGda3I3oG" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -15,12 +34,24 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\MDF-SA-DDI-main" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.task1重做2">
     <configuration name="task1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="MDF-SA-DDI-main" />
+      <module name="李杨的项目" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -41,9 +72,77 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="task1重做2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="李杨的项目" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task1重做2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task1重做" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="李杨的项目" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task1重做.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task1_old" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="李杨的项目" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task1_old.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.task1重做2" />
         <item itemvalue="Python.task1" />
+        <item itemvalue="Python.task1_old" />
       </list>
     </recent_temporary>
   </component>
@@ -59,7 +158,9 @@
       <updated>1637896038481</updated>
       <workItem from="1637896040531" duration="11326000" />
       <workItem from="1638168625037" duration="768000" />
-      <workItem from="1643520303768" duration="85000" />
+      <workItem from="1643520303768" duration="49442000" />
+      <workItem from="1643716109257" duration="419000" />
+      <workItem from="1644191718687" duration="69000" />
     </task>
     <servers />
   </component>
@@ -71,52 +172,111 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="233" y="3" key="#Deployment/0.0.1280.680@0.0.1280.680" timestamp="1643520391256" />
-    <state x="495" y="51" key="#xdebugger.evaluate" timestamp="1637906939197">
+    <state x="382" y="150" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1643625216187">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="495" y="51" key="#xdebugger.evaluate/0.0.1280.680@0.0.1280.680" timestamp="1637906939197" />
-    <state width="1278" height="440" key="DebuggerActiveHint" timestamp="1637918794724">
+    <state x="382" y="150" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1643625216187" />
+    <state x="99" y="205" width="1077" height="475" key="#xdebugger.evaluate" timestamp="1643679098927">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1278" height="440" key="DebuggerActiveHint/0.0.1280.680@0.0.1280.680" timestamp="1637918794724" />
-    <state width="1237" height="220" key="GridCell.Tab.0.bottom" timestamp="1643520440928">
+    <state x="99" y="205" width="1077" height="475" key="#xdebugger.evaluate/0.0.1280.680@0.0.1280.680" timestamp="1643679098927" />
+    <state width="1278" height="411" key="DebuggerActiveHint" timestamp="1643679016268">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="220" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1643520440928" />
-    <state width="1237" height="220" key="GridCell.Tab.0.center" timestamp="1643520440928">
+    <state width="1278" height="411" key="DebuggerActiveHint/0.0.1280.680@0.0.1280.680" timestamp="1643679016268" />
+    <state width="1237" height="165" key="GridCell.Tab.0.bottom" timestamp="1643701101222">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="220" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1643520440928" />
-    <state width="1237" height="220" key="GridCell.Tab.0.left" timestamp="1643520440928">
+    <state width="1237" height="165" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1643701101222" />
+    <state width="1237" height="165" key="GridCell.Tab.0.center" timestamp="1643701101222">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="220" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1643520440928" />
-    <state width="1237" height="220" key="GridCell.Tab.0.right" timestamp="1643520440928">
+    <state width="1237" height="165" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1643701101222" />
+    <state width="1237" height="165" key="GridCell.Tab.0.left" timestamp="1643701101222">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="220" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1643520440928" />
-    <state width="1237" height="154" key="GridCell.Tab.1.bottom" timestamp="1637920423134">
+    <state width="1237" height="165" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1643701101222" />
+    <state width="1237" height="165" key="GridCell.Tab.0.right" timestamp="1643701101222">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="154" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1637920423134" />
-    <state width="1237" height="154" key="GridCell.Tab.1.center" timestamp="1637920423134">
+    <state width="1237" height="165" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1643701101222" />
+    <state width="1237" height="169" key="GridCell.Tab.1.bottom" timestamp="1643679193947">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="154" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1637920423134" />
-    <state width="1237" height="154" key="GridCell.Tab.1.left" timestamp="1637920423134">
+    <state width="1237" height="169" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1643679193947" />
+    <state width="1237" height="169" key="GridCell.Tab.1.center" timestamp="1643679193947">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="154" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1637920423134" />
-    <state width="1237" height="154" key="GridCell.Tab.1.right" timestamp="1637920423134">
+    <state width="1237" height="169" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1643679193947" />
+    <state width="1237" height="169" key="GridCell.Tab.1.left" timestamp="1643679193947">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="154" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1637920423134" />
+    <state width="1237" height="169" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1643679193947" />
+    <state width="1237" height="169" key="GridCell.Tab.1.right" timestamp="1643679193947">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="169" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1643679193947" />
+    <state width="647" height="347" key="XDebugger.FullValuePopup" timestamp="1643679129947">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="647" height="347" key="XDebugger.FullValuePopup/0.0.1280.680@0.0.1280.680" timestamp="1643679129947" />
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1643617505502">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680@0.0.1280.680" timestamp="1643617505502" />
+    <state x="197" y="80" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1643617165007">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="197" y="80" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1280.680@0.0.1280.680" timestamp="1643617165007" />
+    <state x="332" y="95" width="617" height="490" key="find.popup" timestamp="1643616947238">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="332" y="95" width="617" height="490" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1643616947238" />
     <state x="520" y="78" key="ftp.server.browser" timestamp="1643520381917">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="520" y="78" key="ftp.server.browser/0.0.1280.680@0.0.1280.680" timestamp="1643520381917" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1.py</url>
+          <line>484</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1.py</url>
+          <line>522</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1.py</url>
+          <line>91</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1重做.py</url>
+          <line>670</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1重做.py</url>
+          <line>745</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1重做.py</url>
+          <line>441</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/task1重做2.py</url>
+          <line>566</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="df_drug" />
@@ -127,10 +287,73 @@
         <watch expression="i" />
         <watch expression="np.array(df_drug['name']).tolist()[i]" />
         <watch expression="len(x_train[0]) // 2" />
+        <watch expression="df_feature" />
+        <watch expression="numerator / denominator" />
+        <watch expression="drugA[i]" />
+        <watch expression="drugA" />
+        <watch expression="drugA[1]" />
+        <watch expression="drugA.tolist()" />
+        <watch expression="df_drug['name']" />
+        <watch expression=" df_drug['name'].index('1111') " />
+        <watch expression="df_drug['name'].index('aaaa')" />
+        <watch expression="df_drug['name'].tolist()" />
+        <watch expression="df_drug['name'].tolist().index('aaaa')" />
+        <watch expression=" df_drug['name'].tolist().index(i) for i in   drugA.tolist()" />
+        <watch expression=" [df_drug['name'].tolist().index(i) for i in   drugA.tolist()]" />
+        <watch expression="[df_drug['name'].tolist().index(i) for i in   drugA.tolist()]" />
+        <watch expression="drag_a_index" />
+        <watch expression="new_feature" />
+        <watch expression="np.array([drag_a_index,drag_b_index])" />
+        <watch expression="np.array([drag_a_index,drag_b_index])] " />
+        <watch expression="np.concatenate([new_feature,    np.array([drag_a_index, drag_b_index])]   , axis=0)" />
+        <watch expression=" np.concatenate(   [new_feature,    np.array([drag_a_index, drag_b_index])]   , axis=1)" />
+        <watch expression="np.array([drag_a_index,drag_b_index]).T" />
+        <watch expression="np.concatenate(   [new_feature,    np.array([drag_a_index, drag_b_index]).T]   , axis=1)" />
+        <watch expression="X[-2:]" />
+        <watch expression="X" />
+        <watch expression="X[:,-2:]" />
+        <watch expression="  self.qianru(   X[:,-2:]   )" />
+        <watch expression="X[:,-2:] " />
+        <watch expression=" X[:,-2] " />
+        <watch expression="self.qianru(   X[:,-2]   )" />
+        <watch expression=" X[:,-2].dtype(int) " />
+        <watch expression="X[:,-2].int" />
+        <watch expression=" X[:,-2].int()  " />
+        <watch expression=" self.qianru(   X[:,-2].int()  )" />
+        <watch expression="X[:,:-2]" />
+        <watch expression="self.ae1(X)" />
+        <watch expression="self.l1(X)  " />
+        <watch expression="skf.split(feature, label)" />
+        <watch expression="(len(x_train[0])-2)//2" />
+        <watch expression="np.vstack(   (x_train, np.hstack(  (x_train[:, half:2*half], x_train[:, :half])            )       )   )" />
+        <watch expression=" np.vstack(   (x_train[:,:-3], np.hstack(  (x_train[:, half:2*half], x_train[:, :half] , x_train[:, -2:]  )            )       )   )" />
+        <watch expression="x_train[:,:-3]" />
+        <watch expression="np.hstack(  (x_train[:, half:2*half], x_train[:, :half] , x_train[:, -2:]  )            )     " />
+        <watch expression="__py_debug_temp_var_1103903747" />
+        <watch expression="np.vstack(   (x_train, np.hstack(  (x_train[:, half:2*half], x_train[:, :half] , x_train[:, -2:]  )            )       )   )" />
+        <watch expression="np.random.seed(seed)" />
+        <watch expression="list(skf.split(feature, label))[:1]" />
+        <watch expression="inputs.transpose(0,1)" />
+        <watch expression="inputs.transpose(0,1).unsqueeze(2)" />
+        <watch expression="  inputs.unsqueeze(2) " />
+        <watch expression="   inputs.transpose(0,1).unsqueeze(2)  " />
+        <watch expression=" model(    inputs.transpose(0,1).unsqueeze(2)    )" />
+        <watch expression="model(    inputs.transpose(0,1).unsqueeze(2)    )" />
+        <watch expression="len(feature[0])" />
+        <watch expression=" inputs.unsqueeze(1)   " />
+        <watch expression="X.transpose(0,1)" />
+        <watch expression="X.unsqueeze(0)" />
+        <watch expression="X.squeeze(0)" />
+        <watch expression="inputs.float()" />
+        <watch expression="model" language="Python" />
+        <watch expression="model" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MDF_SA_DDI_main$task1.coverage" NAME="task1 Coverage Results" MODIFIED="1643520440921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MDF_SA_DDI_main$task1.coverage" NAME="task1 Coverage Results" MODIFIED="1643614984225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/$task12.coverage" NAME="task1重做2 Coverage Results" MODIFIED="1643701101216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/$task1.coverage" NAME="task1重做 Coverage Results" MODIFIED="1643632548814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/$task1_old.coverage" NAME="task1_old Coverage Results" MODIFIED="1643609477487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

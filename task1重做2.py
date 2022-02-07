@@ -2,8 +2,8 @@
 # coding: utf-8
 
 # In[101]:
-
-
+# ==============================修改特征为one-hot编码
+epo_num = 120
 from numpy.random import seed
 import csv
 import sqlite3
@@ -47,7 +47,11 @@ import torch.nn.functional as F
 import networkx as nx
 
 import warnings
-
+bert_n_heads = 12
+bert_n_layers = 4
+drop_out_rating = 0.3
+batch_size = 6
+learn_rating = 3e-3
 warnings.filterwarnings("ignore")
 
 import os
@@ -74,30 +78,31 @@ def prepare(df_drug, feature_list, mechanism, action, drugA, drugB):
     d_feature = {}
 
     # Transfrom the interaction event to number
-    d_event = [] # 把药物关系和作用升降拼接字符串存到d_event数组里面
+    d_event = []  # 把药物关系和作用升降拼接字符串存到d_event数组里面
     for i in range(len(mechanism)):
         d_event.append(mechanism[i] + " " + action[i])
-#统计关系表d_event里面元素和他的频率
+    # 统计关系表d_event里面元素和他的频率
     count = {}
     for i in d_event:
         if i in count:
             count[i] += 1
         else:
-            count[i] = 1#===========一共65个所以就是65分类问题.
+            count[i] = 1  # ===========一共65个所以就是65分类问题.
     event_num = len(count)
     list1 = sorted(count.items(), key=lambda x: x[1], reverse=True)
     for i in range(len(list1)):
-        d_label[list1[i][0]] = i # d_label记录药品的名字和他的索引对应.
+        d_label[list1[i][0]] = i  # d_label记录药品的名字和他的索引对应.
 
-    vector = np.zeros(       (len(np.array(df_drug['name']).tolist()), 0), dtype=float)  # vector=[]
+    vector = np.zeros((len(np.array(df_drug['name']).tolist()), 0), dtype=float)  # vector=[]
     for i in feature_list:
         # vector = np.hstack((vector, feature_vector(i, df_drug, vector_size)))#1258*1258
-        tempvec = feature_vector(i, df_drug) #搭建特征向量.传入特征的名字和药物df
-        vector = np.hstack((vector, tempvec))#=========这个地方特征向量可以加入nlp里面embedding,可以 不止用jaccard.*******************************************************************************或者单纯one-hot编码.等方式都可以.#=====================tempvec可以修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        tempvec = feature_vector(i, df_drug)  # 搭建特征向量.传入特征的名字和药物df
+        vector = np.hstack((vector,
+                            tempvec))  # =========这个地方特征向量可以加入nlp里面embedding,可以 不止用jaccard.*******************************************************************************或者单纯one-hot编码.等方式都可以.#=====================tempvec可以修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Transfrom the drug ID to feature vector
     for i in range(len(np.array(df_drug['name']).tolist())):
         d_feature[np.array(df_drug['name']).tolist()[i]] = vector[i]
-    #================d_feature 现在得到的是各个药物的特征.!*****************************************************************************************************************我们就在这地方进行修改即可.
+    # ================d_feature 现在得到的是各个药物的特征.!*****************************************************************************************************************我们就在这地方进行修改即可.
     # Use the dictionary to obtain feature vector and label
     new_feature = []
     new_label = []
@@ -109,15 +114,16 @@ def prepare(df_drug, feature_list, mechanism, action, drugA, drugB):
     # new_label  记录2种药物之间的作用结果.
     new_feature = np.array(new_feature)  # 323539*....
     new_label = np.array(new_label)  # 323539
-    drag_a_index=  [df_drug['name'].tolist().index(i) for i in   drugA.tolist()]
-    drag_b_index=  [df_drug['name'].tolist().index(i) for i in   drugB.tolist()]
-    np.array([drag_a_index,drag_b_index]).T
-    new_feature=np.concatenate(   [new_feature,    np.array([drag_a_index, drag_b_index]).T]   , axis=1)
-    return new_feature, new_label, event_num,drag_a_index,drag_b_index,len(df_drug)
+    drag_a_index = [df_drug['name'].tolist().index(i) for i in drugA.tolist()]
+    drag_b_index = [df_drug['name'].tolist().index(i) for i in drugB.tolist()]
+    np.array([drag_a_index, drag_b_index]).T
+    new_feature = np.concatenate([new_feature, np.array([drag_a_index, drag_b_index]).T], axis=1)
+    return new_feature, new_label, event_num, drag_a_index, drag_b_index, len(df_drug)
+
 
 # In[104]:
 
-#对每一个药物的成分进行编码.一共有 3种成分类别.每个类别别有多重成分.
+# 对每一个药物的成分进行编码.一共有 3种成分类别.每个类别别有多重成分.
 def feature_vector(feature_name, df):
     def Jaccard(matrix):
         matrix = np.mat(matrix)
@@ -128,7 +134,7 @@ def feature_vector(feature_name, df):
 
         return numerator / denominator
 
-    all_feature = [] # 记录所有的特征
+    all_feature = []  # 记录所有的特征
     drug_list = np.array(df[feature_name]).tolist()
     # Features for each drug, for example, when feature_name is target, drug_list=["P30556|P05412","P28223|P46098|……"]
     for i in drug_list:
@@ -138,14 +144,14 @@ def feature_vector(feature_name, df):
     feature_matrix = np.zeros((len(drug_list), len(all_feature)), dtype=float)
     df_feature = DataFrame(feature_matrix, columns=all_feature)  # Consrtuct feature matrices with key of dataframe
     for i in range(len(drug_list)):
-        for each_feature in df[feature_name].iloc[i].split('|'): #对应特征位置写入1. # 这地方应该用批量写入能优化速度.
+        for each_feature in df[feature_name].iloc[i].split('|'):  # 对应特征位置写入1. # 这地方应该用批量写入能优化速度.
             df_feature[each_feature].iloc[i] = 1
-
-    df_feature = np.array(df_feature)  #=================这地方加入特征
+    # ===========================当前行得到的df_feature就是onne-hot编码
+    df_feature = np.array(df_feature)  # =================这地方加入特征
     sim_matrix = np.array(Jaccard(df_feature))
 
     print(feature_name + " len is:" + str(len(sim_matrix[0])))
-    return sim_matrix
+    return df_feature
 
 
 # In[105]:
@@ -252,7 +258,7 @@ class AE1(torch.nn.Module):  # Joining together
         self.ac = gelu
 
     def forward(self, X):
-        X = self.dr(self.bn1(self.ac(    self.l1(X)   )))
+        X = self.dr(self.bn1(self.ac(self.l1(X))))
 
         X = self.att2(X)
         X = self.l2(X)
@@ -393,43 +399,44 @@ class ADDAE(torch.nn.Module):
 
 
 class BERT(torch.nn.Module):
-    def __init__(self, input_dim, n_heads, n_layers, event_num,drag_a_index,drag_b_index,len_dragdf):# 第一个参数是 特征维度, 最后一个是输出维度.
+    def __init__(self, input_dim, n_heads, n_layers, event_num, drag_a_index, drag_b_index,
+                 len_dragdf):  # 第一个参数是 特征维度, 最后一个是输出维度.
         super(BERT, self).__init__()
-        nlp_dimension=768
-        self.ae1 = AE1(input_dim+nlp_dimension*2-2)  # Joining together 编码
-        self.ae2 = AE2(input_dim+nlp_dimension*2-2)  # twin loss
-        self.cov = cov(input_dim+nlp_dimension*2-2)  # cov
-        self.ADDAE = ADDAE(input_dim+nlp_dimension*2-2)
-        self.qianru=nn.Embedding(len_dragdf,nlp_dimension)###=2022-01-30,21点45新加入的类nlp嵌入层.
+        nlp_dimension = 768
+        self.ae1 = AE1(input_dim)  # Joining together 编码
+        self.ae2 = AE2(input_dim)  # twin loss
+        self.cov = cov(input_dim)  # cov
+        self.ADDAE = ADDAE(input_dim)
+        # self.qianru=nn.Embedding(len_dragdf,nlp_dimension)###=2022-01-30,21点45新加入的类nlp嵌入层.
 
         self.dr = torch.nn.Dropout(drop_out_rating)
-        self.input_dim = input_dim+nlp_dimension*2-2
+        # self.input_dim = input_dim+nlp_dimension*2-2
 
-        self.layers = torch.nn.ModuleList([EncoderLayer(len_after_AE * 5, n_heads) for _ in range(n_layers)])
-        self.AN = torch.nn.LayerNorm(len_after_AE * 5)
+        self.layers = torch.nn.ModuleList([EncoderLayer(input_dim, n_heads) for _ in range(n_layers)])
+        self.AN = torch.nn.LayerNorm(input_dim)
 
-        self.l1 = torch.nn.Linear(len_after_AE * 5, (len_after_AE * 5 + event_num) // 2)
-        self.bn1 = torch.nn.BatchNorm1d((len_after_AE * 5 + event_num) // 2)
+        self.l1 = torch.nn.Linear(input_dim, (input_dim + event_num) // 2)
+        self.bn1 = torch.nn.BatchNorm1d((input_dim + event_num) // 2)
 
-        self.l2 = torch.nn.Linear((len_after_AE * 5 + event_num) // 2, event_num)
+        self.l2 = torch.nn.Linear((input_dim + event_num) // 2, event_num)
 
         self.ac = gelu
 
     def forward(self, X):
-        #=====加入嵌入层.
-        qianru1=   self.qianru(   X[:,-2].int()  )
-        qianru2=   self.qianru(   X[:,-1].int()  )
-        X=torch.cat([X[:,:-2],qianru1,qianru2],1)
-        X1, X_AE1 = self.ae1(X)
-        X2, X_AE2 = self.ae2(X)
-
-        X3 = self.cov(X)
-
-        X4, X_AE4 = self.ADDAE(X)
-
-        X5 = X1 + X2 + X3 + X4
-
-        X = torch.cat((X1, X2, X3, X4, X5), 1)
+        # =====加入嵌入层.
+        # qianru1=   self.qianru(   X[:,-2].int()  )
+        # qianru2=   self.qianru(   X[:,-1].int()  )
+        # X=torch.cat([X[:,:-2],qianru1,qianru2],1)
+        # X1, X_AE1 = self.ae1(X)
+        # X2, X_AE2 = self.ae2(X)
+        #
+        # X3 = self.cov(X)
+        #
+        # X4, X_AE4 = self.ADDAE(X)
+        #
+        # X5 = X1 + X2 + X3 + X4
+        #
+        # X = torch.cat((X1, X2, X3, X4, X5), 1)
 
         for layer in self.layers:
             X = layer(X)
@@ -439,13 +446,13 @@ class BERT(torch.nn.Module):
 
         X = self.l2(X)
 
-        return X, X_AE1, X_AE2, X_AE4
+        return X
 
 
 # In[114]:
 
 
-class focal_loss(nn.Module):# 对交叉熵的优化. exp光滑处理.
+class focal_loss(nn.Module):  # 对交叉熵的优化. exp光滑处理.
     def __init__(self, gamma=2):
         super(focal_loss, self).__init__()
 
@@ -477,15 +484,12 @@ class my_loss1(nn.Module):
         self.criteria1 = torch.nn.CrossEntropyLoss()
         self.criteria2 = torch.nn.MSELoss()
 
-    def forward(self, X, target, inputs, X_AE1, X_AE2, X_AE4):
+    def forward(self, X, target, inputs=None, X_AE1=None, X_AE2=None, X_AE4=None):
         # print(inputs.shape)
         # print(X_AE1.shape)
         # print(X_AE2.shape)
         # print(X_AE4.shape)
-        loss = calssific_loss_weight * self.criteria1(X, target)# + \
-               # self.criteria2(inputs.float(), X_AE1) + \
-               # self.criteria2(inputs.float(), X_AE2) + \
-               # self.criteria2(inputs.float(), X_AE4)
+        loss = calssific_loss_weight * self.criteria1(X, target)
         return loss
 
 
@@ -496,11 +500,8 @@ class my_loss2(nn.Module):
         self.criteria1 = focal_loss()
         self.criteria2 = torch.nn.MSELoss()
 
-    def forward(self, X, target, inputs, X_AE1, X_AE2, X_AE4):
-        loss = calssific_loss_weight * self.criteria1(X, target) #+ \
-               # self.criteria2(inputs.float(), X_AE1) + \
-               # self.criteria2(inputs.float(), X_AE2) + \
-               # self.criteria2(inputs.float(), X_AE4)
+    def forward(self, X, target, inputs=None, X_AE1=None, X_AE2=None, X_AE4=None):
+        loss = calssific_loss_weight * self.criteria1(X, target)
         return loss
 
 
@@ -518,9 +519,9 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
     model_optimizer = RAdam(model.parameters(), lr=learn_rating, weight_decay=weight_decay_rate)
     model = torch.nn.DataParallel(model)
     model = model.to(device)
-# 下面这个预处理,把x_train的后面数据进行了顺序修改,就是把列特征进行了颠倒.让特征可以不依赖顺序.
-    half=(len(x_train[0])-2)//2
-    x_train = np.vstack(   (x_train, np.hstack(  (x_train[:, half:2*half], x_train[:, :half] , x_train[:, -2:]  )            )       )   )
+    # 下面这个预处理,把x_train的后面数据进行了顺序修改,就是把列特征进行了颠倒.让特征可以不依赖顺序.
+    half = (len(x_train[0]) - 2) // 2
+    x_train = np.vstack((x_train, np.hstack((x_train[:, len(x_train[0]) // 2:], x_train[:, :len(x_train[0]) // 2]))))
     y_train = np.hstack((y_train, y_train))
     np.random.seed(seed)
     np.random.shuffle(x_train)
@@ -538,10 +539,10 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
     for epoch in range(epo_num):
-        if epoch < epoch_changeloss:# 小于60轮次之前用loss1. 交叉熵和mse. 看做一个多酚类问题.
+        if epoch < epoch_changeloss:  # 小于60轮次之前用loss1. 交叉熵和mse. 看做一个多酚类问题.
             my_loss = my_loss1()
         else:
-            my_loss = my_loss2() # 可以加入软标签..........
+            my_loss = my_loss2()  # 可以加入软标签..........
 
         running_loss = 0.0
 
@@ -549,12 +550,13 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
         for batch_idx, data in enumerate(train_loader, 0):
             x, y = data
 
-            # lam = np.random.beta(0.5, 0.5)
-            # index = torch.randperm(x.size()[0]).to(device)
-            # inputs = lam * x + (1 - lam) * x[index, :] # 进行特征乱排序.
-            inputs=x #===============不尽兴乱序,会导致无法解释.
-            targets_a, targets_b = y, y
-            lam=0.5
+            lam = np.random.beta(0.5, 0.5)
+            index = torch.randperm(x.size()[0]).to(device)
+            inputs = lam * x + (1 - lam) * x[index,
+                                           :]  # 进行特征乱排序.=====================等于两个样本进行叠加!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!数据增强.
+            # inputs=x #===============不尽兴乱序,会导致无法解释.
+            targets_a, targets_b = y, y[index]
+            # lam=0.5
 
             inputs = inputs.to(device)
             targets_a = targets_a.to(device)
@@ -562,10 +564,9 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
 
             model_optimizer.zero_grad()
             # forward + backward+update
-            X, X_AE1, X_AE2, X_AE4 = model(inputs.float())
+            X = model(inputs.float())
 
-            loss = lam * my_loss(X, targets_a, inputs, X_AE1, X_AE2, X_AE4) + (1 - lam) * my_loss(X, targets_b, inputs,
-                                                                                                  X_AE1, X_AE2, X_AE4)
+            loss = lam * my_loss(X,targets_a) + (1 - lam) * my_loss(X,targets_b)
 
             loss.backward()
             model_optimizer.step()
@@ -573,7 +574,7 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
 
         model.eval()
         testing_loss = 0.0
-        with torch.no_grad():#每一个epoch都进行测试
+        with torch.no_grad():  # 每一个epoch都进行测试
             for batch_idx, data in enumerate(test_loader, 0):
                 inputs, target = data
 
@@ -581,12 +582,12 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
 
                 target = target.to(device)
 
-                X, X_AE1, X_AE2, X_AE4 = model(inputs.float())
+                X = model(inputs.float())
 
-                loss = my_loss(X, target, inputs, X_AE1, X_AE2, X_AE4)
+                loss = my_loss(X, target, inputs)
                 testing_loss += loss.item()
         print('epoch [%d] loss: %.6f testing_loss: %.6f ' % (
-        epoch + 1, running_loss / len_train, testing_loss / len_test))
+            epoch + 1, running_loss / len_train, testing_loss / len_test))
 
     pre_score = np.zeros((0, event_num), dtype=float)
     model.eval()
@@ -606,6 +607,7 @@ def roc_aupr_score(y_true, y_score, average="macro"):
     def _binary_roc_aupr_score(y_true, y_score):
         precision, recall, pr_thresholds = precision_recall_curve(y_true, y_score)
         return auc(recall, precision)
+
     def _average_binary_score(binary_metric, y_true, y_score, average):  # y_true= y_one_hot
         if average == "binary":
             return binary_metric(y_true, y_score)
@@ -623,7 +625,10 @@ def roc_aupr_score(y_true, y_score, average="macro"):
             y_score_c = y_score.take([c], axis=1).ravel()
             score[c] = binary_metric(y_true_c, y_score_c)
         return np.average(score)
+
     return _average_binary_score(_binary_roc_aupr_score, y_true, y_score, average)
+
+
 def evaluate(pred_type, pred_score, y_test, event_num):
     all_eval_type = 11
     result_all = np.zeros((all_eval_type, 1), dtype=float)
@@ -659,60 +664,60 @@ def evaluate(pred_type, pred_score, y_test, event_num):
 
 # In[117]:
 
-#这个是训练代码
-def cross_val(feature,label,event_num,drag_a_index,drag_b_index,len_dragdf):
-    skf = StratifiedKFold(n_splits=cross_ver_tim)# 先进行cv分解
+# 这个是训练代码
+def cross_val(feature, label, event_num, drag_a_index, drag_b_index, len_dragdf):
+    skf = StratifiedKFold(n_splits=cross_ver_tim)  # 先进行cv分解
     y_true = np.array([])
     y_score = np.zeros((0, event_num), dtype=float)
     y_pred = np.array([])
-    
-    for train_index, test_index in list(skf.split(feature, label))[:1]:#进行数据4:1分割.=========================所以一共要训练 5轮,每轮120epoch.
-        
-        model=BERT(len(feature[0]),bert_n_heads,bert_n_layers,event_num,drag_a_index,drag_b_index,len_dragdf) # 就是提取特征.
+
+    for train_index, test_index in list(skf.split(feature, label))[
+                                   :1]:  # 进行数据4:1分割.=========================所以一共要训练 5轮,每轮120epoch.
+
+        model = BERT(len(feature[0]), bert_n_heads, bert_n_layers, event_num, drag_a_index, drag_b_index,
+                     len_dragdf)  # 就是提取特征.
 
         X_train, X_test = feature[train_index], feature[test_index]
         y_train, y_test = label[train_index], label[test_index]
         print("train len", len(y_train))
         print("test len", len(y_test))
-        
-        pred_score=BERT_train(model,X_train,y_train,X_test,y_test,event_num)
-        
+
+        pred_score = BERT_train(model, X_train, y_train, X_test, y_test, event_num)
+
         pred_type = np.argmax(pred_score, axis=1)
         y_pred = np.hstack((y_pred, pred_type))
         y_score = np.row_stack((y_score, pred_score))
 
         y_true = np.hstack((y_true, y_test))
-        
-    result_all, result_eve= evaluate(y_pred, y_score, y_true, event_num)
-    print('打印11个指标',result_all)
+
+    result_all, result_eve = evaluate(y_pred, y_score, y_true, event_num)
+    print('打印11个指标', result_all)
     return result_all, result_eve
 
 
 # In[118]:
 
-epo_num=120
-file_path="./"
+
+file_path = "./"
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-bert_n_heads=4
-bert_n_layers=4
-drop_out_rating=0.3
-batch_size=256
-len_after_AE=500
-learn_rating=0.00001
 
-cross_ver_tim=5
-cov2KerSize=50
-cov1KerSize=25
-calssific_loss_weight=5
-epoch_changeloss=epo_num//2
-weight_decay_rate=0.0001
-feature_list = ["smile","target","enzyme"]
+len_after_AE = 500
 
-def save_result(filepath,result_type,result):
-    with open(filepath+result_type +'task1'+ '.csv', "w", newline='',encoding='utf-8') as csvfile:
+
+cross_ver_tim = 5
+cov2KerSize = 50
+cov1KerSize = 25
+calssific_loss_weight = 5
+epoch_changeloss = epo_num // 2
+weight_decay_rate = 0.0001
+feature_list = ["smile", "target", "enzyme"]
+
+
+def save_result(filepath, result_type, result):
+    with open(filepath + result_type + 'task1' + '.csv', "w", newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for i in result:
             writer.writerow(i)
@@ -723,30 +728,29 @@ def save_result(filepath,result_type,result):
 
 
 def main():
-    #这个数据表示的是论文第三页的data1. 因为df_drug 行数就是572表示572个药.
+    # 这个数据表示的是论文第三页的data1. 因为df_drug 行数就是572表示572个药.
     conn = sqlite3.connect("./event.db")
     # 使用pandas读取sqlite数据库里面信息.
     df_drug = pd.read_sql('select * from drug;', conn)
-    extraction = pd.read_sql('select * from extraction;', conn) # 表示572个药之间的关系
+    extraction = pd.read_sql('select * from extraction;', conn)  # 表示572个药之间的关系
     mechanism = extraction['mechanism']
     action = extraction['action']  # 这个是两种药的作用结果.
-    drugA = extraction['drugA'] # a药品
-    drugB = extraction['drugB'] # b药品    这3个都是37264长度的数组
-    
+    drugA = extraction['drugA']  # a药品
+    drugB = extraction['drugB']  # b药品    这3个都是37264长度的数组
 
-    
-    new_feature, new_label, event_num  ,drag_a_index,drag_b_index,len_dragdf=prepare(df_drug,feature_list,mechanism,action,drugA,drugB)
-    np.random.seed(seed)
+    new_feature, new_label, event_num, drag_a_index, drag_b_index, len_dragdf = prepare(df_drug, feature_list,
+                                                                                        mechanism, action, drugA, drugB)
+    np.random.seed(seed)  # =======================每次shuffle前用这行,保证shuaffle的是一样的顺序.
     np.random.shuffle(new_feature)
     np.random.seed(seed)
     np.random.shuffle(new_label)
     print("dataset len", len(new_feature))
-    
-    start=time.time()
-    result_all, result_eve=cross_val(new_feature,new_label,event_num,drag_a_index,drag_b_index,len_dragdf)
+
+    start = time.time()
+    result_all, result_eve = cross_val(new_feature, new_label, event_num, drag_a_index, drag_b_index, len_dragdf)
     print("time used:", (time.time() - start) / 3600)
-    save_result(file_path,"all",result_all)
-    save_result(file_path,"each",result_eve)
+    save_result(file_path, "all", result_all)
+    save_result(file_path, "each", result_eve)
 
 
 # In[120]:

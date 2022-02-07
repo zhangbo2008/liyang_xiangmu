@@ -2,8 +2,8 @@
 # coding: utf-8
 
 # In[101]:
-
-
+#==============================修改特征为one-hot编码
+epo_num=1200
 from numpy.random import seed
 import csv
 import sqlite3
@@ -140,12 +140,12 @@ def feature_vector(feature_name, df):
     for i in range(len(drug_list)):
         for each_feature in df[feature_name].iloc[i].split('|'): #对应特征位置写入1. # 这地方应该用批量写入能优化速度.
             df_feature[each_feature].iloc[i] = 1
-
+#===========================当前行得到的df_feature就是onne-hot编码
     df_feature = np.array(df_feature)  #=================这地方加入特征
     sim_matrix = np.array(Jaccard(df_feature))
 
     print(feature_name + " len is:" + str(len(sim_matrix[0])))
-    return sim_matrix
+    return df_feature
 
 
 # In[105]:
@@ -396,14 +396,14 @@ class BERT(torch.nn.Module):
     def __init__(self, input_dim, n_heads, n_layers, event_num,drag_a_index,drag_b_index,len_dragdf):# 第一个参数是 特征维度, 最后一个是输出维度.
         super(BERT, self).__init__()
         nlp_dimension=768
-        self.ae1 = AE1(input_dim+nlp_dimension*2-2)  # Joining together 编码
-        self.ae2 = AE2(input_dim+nlp_dimension*2-2)  # twin loss
-        self.cov = cov(input_dim+nlp_dimension*2-2)  # cov
-        self.ADDAE = ADDAE(input_dim+nlp_dimension*2-2)
-        self.qianru=nn.Embedding(len_dragdf,nlp_dimension)###=2022-01-30,21点45新加入的类nlp嵌入层.
+        self.ae1 = AE1(input_dim)  # Joining together 编码
+        self.ae2 = AE2(input_dim)  # twin loss
+        self.cov = cov(input_dim)  # cov
+        self.ADDAE = ADDAE(input_dim)
+        # self.qianru=nn.Embedding(len_dragdf,nlp_dimension)###=2022-01-30,21点45新加入的类nlp嵌入层.
 
         self.dr = torch.nn.Dropout(drop_out_rating)
-        self.input_dim = input_dim+nlp_dimension*2-2
+        # self.input_dim = input_dim+nlp_dimension*2-2
 
         self.layers = torch.nn.ModuleList([EncoderLayer(len_after_AE * 5, n_heads) for _ in range(n_layers)])
         self.AN = torch.nn.LayerNorm(len_after_AE * 5)
@@ -417,9 +417,9 @@ class BERT(torch.nn.Module):
 
     def forward(self, X):
         #=====加入嵌入层.
-        qianru1=   self.qianru(   X[:,-2].int()  )
-        qianru2=   self.qianru(   X[:,-1].int()  )
-        X=torch.cat([X[:,:-2],qianru1,qianru2],1)
+        # qianru1=   self.qianru(   X[:,-2].int()  )
+        # qianru2=   self.qianru(   X[:,-1].int()  )
+        # X=torch.cat([X[:,:-2],qianru1,qianru2],1)
         X1, X_AE1 = self.ae1(X)
         X2, X_AE2 = self.ae2(X)
 
@@ -482,10 +482,10 @@ class my_loss1(nn.Module):
         # print(X_AE1.shape)
         # print(X_AE2.shape)
         # print(X_AE4.shape)
-        loss = calssific_loss_weight * self.criteria1(X, target)# + \
-               # self.criteria2(inputs.float(), X_AE1) + \
-               # self.criteria2(inputs.float(), X_AE2) + \
-               # self.criteria2(inputs.float(), X_AE4)
+        loss = calssific_loss_weight * self.criteria1(X, target) + \
+               self.criteria2(inputs.float(), X_AE1) + \
+               self.criteria2(inputs.float(), X_AE2) + \
+               self.criteria2(inputs.float(), X_AE4)
         return loss
 
 
@@ -497,10 +497,10 @@ class my_loss2(nn.Module):
         self.criteria2 = torch.nn.MSELoss()
 
     def forward(self, X, target, inputs, X_AE1, X_AE2, X_AE4):
-        loss = calssific_loss_weight * self.criteria1(X, target) #+ \
-               # self.criteria2(inputs.float(), X_AE1) + \
-               # self.criteria2(inputs.float(), X_AE2) + \
-               # self.criteria2(inputs.float(), X_AE4)
+        loss = calssific_loss_weight * self.criteria1(X, target) + \
+               self.criteria2(inputs.float(), X_AE1) + \
+               self.criteria2(inputs.float(), X_AE2) + \
+               self.criteria2(inputs.float(), X_AE4)
         return loss
 
 
@@ -520,7 +520,7 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
     model = model.to(device)
 # 下面这个预处理,把x_train的后面数据进行了顺序修改,就是把列特征进行了颠倒.让特征可以不依赖顺序.
     half=(len(x_train[0])-2)//2
-    x_train = np.vstack(   (x_train, np.hstack(  (x_train[:, half:2*half], x_train[:, :half] , x_train[:, -2:]  )            )       )   )
+    x_train=np.vstack((x_train,np.hstack((x_train[:,len(x_train[0])//2:],x_train[:,:len(x_train[0])//2]))))
     y_train = np.hstack((y_train, y_train))
     np.random.seed(seed)
     np.random.shuffle(x_train)
@@ -549,12 +549,12 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
         for batch_idx, data in enumerate(train_loader, 0):
             x, y = data
 
-            # lam = np.random.beta(0.5, 0.5)
-            # index = torch.randperm(x.size()[0]).to(device)
-            # inputs = lam * x + (1 - lam) * x[index, :] # 进行特征乱排序.
-            inputs=x #===============不尽兴乱序,会导致无法解释.
-            targets_a, targets_b = y, y
-            lam=0.5
+            lam = np.random.beta(0.5, 0.5)
+            index = torch.randperm(x.size()[0]).to(device)
+            inputs = lam * x + (1 - lam) * x[index, :] # 进行特征乱排序.=====================等于两个样本进行叠加!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!数据增强.
+            # inputs=x #===============不尽兴乱序,会导致无法解释.
+            targets_a, targets_b = y,  y[index]
+            # lam=0.5
 
             inputs = inputs.to(device)
             targets_a = targets_a.to(device)
@@ -690,7 +690,7 @@ def cross_val(feature,label,event_num,drag_a_index,drag_b_index,len_dragdf):
 
 # In[118]:
 
-epo_num=120
+
 file_path="./"
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -736,7 +736,7 @@ def main():
 
     
     new_feature, new_label, event_num  ,drag_a_index,drag_b_index,len_dragdf=prepare(df_drug,feature_list,mechanism,action,drugA,drugB)
-    np.random.seed(seed)
+    np.random.seed(seed)#=======================每次shuffle前用这行,保证shuaffle的是一样的顺序.
     np.random.shuffle(new_feature)
     np.random.seed(seed)
     np.random.shuffle(new_label)
