@@ -538,7 +538,7 @@ def BERT_train(model, x_train, y_train, x_test, y_test, event_num):
 
             lam = np.random.beta(0.5, 0.5)
             index = torch.randperm(x.size()[0]).to(device)
-            inputs = lam * x + (1 - lam) * x[index, :] # 进行特征乱排序.
+            inputs = lam * x + (1 - lam) * x[index, :] # 样本拼接
 
             targets_a, targets_b = y, y[index]
 
